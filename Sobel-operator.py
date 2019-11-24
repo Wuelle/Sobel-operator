@@ -1,26 +1,20 @@
 import math 
 import numpy as np
 import cv2
-print("start")
 """
 The Algorithm:
 	-https://www.youtube.com/watch?v=uihBwtPIBxM
-
 Vertical Kernel:
-
 1  0 -1
 2  0 -2
 1  0 -1
-
-
 Horizontal Kernel:
-
  1  2  1
  0  0  0
 -1 -2 -1
 """
 
-img = cv2.imread("test3.jpg")
+img = cv2.imread("TestImage.jpg")
 result = np.zeros([img.shape[0], img.shape[1], 3])
 
 def SetPixel(coords, color):
@@ -59,7 +53,6 @@ for x in range(img.shape[0]):
 	for y in range(img.shape[1]):
 		value = ApplyFilter(x, y)
 		SetPixel([x, y], [value/255]*3)
-	print("X:{}".format(x))
 
 result_conc = np.concatenate((img/255, result), axis=0)
 
