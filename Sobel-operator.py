@@ -53,8 +53,10 @@ for x in range(img.shape[0]):
 	for y in range(img.shape[1]):
 		value = ApplyFilter(x, y)
 		SetPixel([x, y], [value/255]*3)
-
-result_conc = np.concatenate((img/255, result), axis=0)
+if img.shape[0] > img.shape[1]:
+	result_conc = np.concatenate((img/255, result), axis=1)
+else: 
+	result_conc = np.concatenate((img/255, result), axis=0)
 
 cv2.imwrite("Result.jpg", result*255)
 cv2.imshow("Result", result_conc)
