@@ -1,6 +1,7 @@
 import math 
 import numpy as np
 import cv2
+import colorsys
 """
 The Algorithm:
 	-https://www.youtube.com/watch?v=uihBwtPIBxM
@@ -24,6 +25,7 @@ def SetPixel(coords, color):
 	result[coords[0], coords[1], 2] = color[0]
 
 def GetPixelValue(x, y):
+	#Pixels outside the image are returned as black
 	try: 
 		return np.average(img[x, y])
 	except:
@@ -46,13 +48,15 @@ def ApplyFilter(x, y):
 	X_Kernel_Value += -2 * GetPixelValue(x, y+1)
 	X_Kernel_Value += -1 * GetPixelValue(x+1, y+1)
 
-	return math.sqrt(X_Kernel_Value**2+Y_Kernel_Value**2)
+	return math.atan2(Y_Kernel_Value, X_Kernel_Value),math.sqrt(X_Kernel_Value**2+Y_Kernel_Value**2)
 
 #Calculate all the pixel values for the 'result' image
 for x in range(img.shape[0]):
 	for y in range(img.shape[1]):
-		value = ApplyFilter(x, y)
-		SetPixel([x, y], [value/255]*3)
+		angle, value = ApplyFilter(x, y)
+		rgb_color = colorsys.hsv_to_rgb(angle, 1, value/(math.sqrt(2)*255))
+		SetPixel([x, y], rgb_color)
+
 if img.shape[0] > img.shape[1]:
 	result_conc = np.concatenate((img/255, result), axis=1)
 else: 
