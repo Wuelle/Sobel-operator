@@ -55,6 +55,6 @@ if img.shape[0] > img.shape[1]:
 else: 
 	result_conc = np.concatenate((img_raw/255, result), axis=0)
 
-cv2.imwrite("Result.jpg", result*255)
+cv2.imwrite(sys.argv[2], result*255)
 cv2.imshow("Result", result_conc)
 cv2.waitKey()
